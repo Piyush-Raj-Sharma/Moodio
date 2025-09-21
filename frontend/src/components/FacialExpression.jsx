@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { use, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
+import "./FacialExpression.css";
 
 export default function FacialExpression() {
   const videoRef = useRef();
-  const canvasRef = useRef();
-  useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = "/models";
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
@@ -18,48 +17,47 @@ export default function FacialExpression() {
         })
         .catch((err) => console.error("Error accessing webcam: ", err));
     };
-    const handleVideoPlay = () => {
-      setInterval(async () => {
+    const detectMood = async () => {
         const detections = await faceapi
           .detectAllFaces(
             videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
-          )
+          ) 
           .withFaceExpressions();
-        const canvas = canvasRef.current;
-        const displaySize = {
-          width: videoRef.current.videoWidth,
-          height: videoRef.current.videoHeight,
+
+        let mostProbleExpression = 0;
+        let _expression = '';
+
+        if(!detections || detections.length == 0 ){
+            console.log("No face detected");
+            
         };
-        faceapi.matchDimensions(canvas, displaySize);
-        const resized = faceapi.resizeResults(detections, displaySize);
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-        faceapi.draw.drawDetections(canvas, resized);
-        faceapi.draw.drawFaceExpressions(canvas, resized);
-      }, 500);
+        
+        for (const expression of Object.keys(detections[0].expressions)){
+            if(detections[0].expressions[expression] > mostProbleExpression){
+                mostProbleExpression = detections[0].expressions[expression];
+                _expression = expression; 
+            }
+        }
+        
+        console.log(_expression);
     };
-    loadModels().then(startVideo);
-    videoRef.current &&
-      videoRef.current.addEventListener("play", handleVideoPlay);
-  }, []);
+
+    useEffect(() => {
+      loadModels().then(startVideo);
+    }, []);
+    // videoRef.current &&
+    //   videoRef.current.addEventListener("play", handleVideoPlay);
+
   return (
-    <div style={{ position: "relative" }}>
+    <div className="mood-element">
       <video
         ref={videoRef}
         autoPlay
         muted
-        style={{ width: "720px", height: "560px" }}
+        className="user-video-feed"
       />
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "720px",
-          height: "560px",
-        }}
-      />
+      <button className = "detect-btn" onClick={detectMood}>Detect Mood</button>
     </div>
   );
 }
