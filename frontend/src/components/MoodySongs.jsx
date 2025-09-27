@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import Loader from "./loader";
 import "./MoodySongs.css";
+import Loader from "./Loader";
 
 const MoodySongs = ({ songs, loading, setLoading }) => {
   const [currentSong, setCurrentSong] = useState(null);

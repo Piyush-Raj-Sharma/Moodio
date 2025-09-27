@@ -13,7 +13,7 @@ const Loader = () => {
     width: "50px",
     height: "50px",
     border: "6px solid #f3f3f3",
-    borderTop: "6px solid #2563eb", // accent color
+    borderTop: "6px solid #2563eb", 
     borderRadius: "50%",
     animation: "spin 1s linear infinite",
   };

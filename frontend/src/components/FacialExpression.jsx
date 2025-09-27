@@ -61,8 +61,11 @@ export default function FacialExpression({ setSongs, setLoading }) {
 
   return (
     <div className="mood-container">
-      <div className="header">
-        <h2>Facial Expression Detector</h2>
+      <div className="songs-header">
+        <h1>
+          <span className="highlight">Moodio</span>
+        </h1>
+        <p className="subtitle">🎵 Music that matches your vibe instantly</p>
       </div>
 
       <div className="mood-card">
