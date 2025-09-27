@@ -3,9 +3,9 @@ import * as faceapi from "face-api.js";
 import "./FacialExpression.css";
 import axios from "axios";
 
-export default function FacialExpression({ setSongs }) {
+export default function FacialExpression({ setSongs, setLoading }) {
   const videoRef = useRef();
-  const [mood, setMood] = useState("Neutral");
+  const [mood, setMood] = useState("Unknown");
 
   const loadModels = async () => {
     const MODEL_URL = "/models";
@@ -23,11 +23,9 @@ export default function FacialExpression({ setSongs }) {
   };
 
   const detectMood = async () => {
+    setLoading(true);
     const detections = await faceapi
-      .detectAllFaces(
-        videoRef.current,
-        new faceapi.TinyFaceDetectorOptions()
-      )
+      .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
       .withFaceExpressions();
 
     if (!detections || detections.length === 0) {
@@ -47,13 +45,14 @@ export default function FacialExpression({ setSongs }) {
 
     setMood(_expression);
 
-    axios
-      .get(`https://moodio-nq45.onrender.com/songs?mood=${_expression}`)
-      .then((response) => {
-        setSongs(response.data.song);
-        console.log(response.data);
-        
-      });
+    try {
+      const response = await axios.get(
+        `https://moodio-nq45.onrender.com/songs?mood=${_expression}`
+      );
+      setSongs(response.data.song);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

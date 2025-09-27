@@ -5,11 +5,12 @@ import "./App.css";
 
 const App = () => {
   const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="app-container">
-      <FacialExpression setSongs={setSongs} />
-      <MoodySongs songs={songs} />
+      <FacialExpression setSongs={setSongs} setLoading = {setLoading} />
+      <MoodySongs songs={songs} loading = {loading} setLoading = {setLoading} />
     </div>
   );
 };
