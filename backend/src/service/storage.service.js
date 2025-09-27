@@ -1,4 +1,5 @@
 var ImageKit = require("imagekit");
+var mongoose = require('mongoose');
 
 var imagekit = new ImageKit({
     publicKey : process.env.IMAGEKIT_PUBLIC_KEY,
@@ -10,7 +11,8 @@ function uploadFile(file){
     return new Promise((resolve, reject) => { //returning promise because we dont know that how much time will it tak eto upload the file 
         imagekit.upload({
             file : file.buffer, //required
-            fileName : "Rudrashtakam", //required      
+            fileName : (new mongoose.Types.ObjectId().toString()), //required
+            folder : "moodio"     
         }, (error, result) => {
             if(error) return reject(error);
             else resolve(result);

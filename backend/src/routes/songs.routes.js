@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const uploadFile = require('../service/storage.service')
+const songModel = require('../model/songs.model');
 const router = express.Router();
 
 const upload = multer({storage: multer.memoryStorage()}); //memorystorage is the server's RAM (multer will temperory store the data for sometime here)
@@ -14,10 +15,16 @@ router.post('/songs', upload.single('audio') , async (req, res) => {
     
     const fileData = await uploadFile(req.file);
     console.log(fileData);
+    const song = await songModel.create({
+        title: req.body.title,
+        artist: req.body.artist,
+        audio: fileData.url,
+        mood: req.body.mood
+    })
 
     res.status(201).json({
         message: 'Song added successfully',
-        song: req.body
+        song: song
     })
     
 })
