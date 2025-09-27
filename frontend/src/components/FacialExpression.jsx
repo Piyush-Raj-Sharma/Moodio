@@ -48,7 +48,7 @@ export default function FacialExpression({ setSongs }) {
     setMood(_expression);
 
     axios
-      .get(`http://localhost:3000/songs?mood=${_expression}`)
+      .get(`https://moodio-nq45.onrender.com/songs?mood=${_expression}`)
       .then((response) => {
         setSongs(response.data.song);
         console.log(response.data);
