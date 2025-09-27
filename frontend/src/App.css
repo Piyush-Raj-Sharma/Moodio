@@ -1,6 +1,6 @@
 .app-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* two columns on large screens */
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   padding: 2rem;
   min-height: 100vh;
@@ -10,7 +10,6 @@
   box-sizing: border-box;
 }
 
-/* Each panel takes full height of grid cell */
 .app-container > * {
   display: flex;
   flex-direction: column;
@@ -18,16 +17,14 @@
   width: 100%;
 }
 
-/* ✅ Tablet view */
 @media (max-width: 1024px) {
   .app-container {
-    grid-template-columns: 1fr; /* stack */
+    grid-template-columns: 1fr; 
     gap: 1.5rem;
     padding: 1.5rem;
   }
 }
 
-/* ✅ Mobile view */
 @media (max-width: 600px) {
   .app-container {
     padding: 1rem;
