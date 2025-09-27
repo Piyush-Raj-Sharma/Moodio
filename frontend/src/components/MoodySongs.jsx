@@ -1,40 +1,56 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./MoodySongs.css";
 
-const MoodySongs = () => {
-  const [songs, setSongS] = useState([
-    {
-      title: "Song 1",
-      artist: "Artist 1",
-      url: "https://example.com/song1.mp3",
-    },
-    {
-      title: "Song 2",
-      artist: "Artist 2",
-      url: "https://example.com/song2.mp3",
-    },
-    {
-      title: "Song 3",
-      artist: "Artist 3",
-      url: "https://example.com/song3.mp3",
-    },
-  ]);
+const MoodySongs = ({ songs }) => {
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(new Audio());
+
+  const handlePlayPause = (song) => {
+    if (currentSong && currentSong._id === song._id) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      audioRef.current = new Audio(song.audio);
+      audioRef.current.play();
+      setCurrentSong(song);
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="moody-songs">
-      <h2>Recommended Songs</h2>
+      <h2 className="heading">🎶 Recommended Songs</h2>
 
-      {songs.map((song, index) => (
-        <div key={index} className="song">
-          <div className="title">
-            <h3>{song.title}</h3>
-            <p>{song.artist}</p>
+      <div className="songs-grid">
+        {songs.map((song) => (
+          <div key={song._id} className="song-card">
+            <div className="song-info">
+              <h3>{song.title}</h3>
+              <p className="artist">{song.artist}</p>
+            </div>
+
+            <button
+              className="play-btn"
+              onClick={() => handlePlayPause(song)}
+            >
+              {currentSong && currentSong._id === song._id && isPlaying ? (
+                <i className="ri-pause-circle-fill"></i>
+              ) : (
+                <i className="ri-play-circle-fill"></i>
+              )}
+            </button>
           </div>
-          <div className="play-pause-btn">
-            <i className="ri-play-circle-fill"></i>
-            <i className="ri-pause-circle-fill"></i>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

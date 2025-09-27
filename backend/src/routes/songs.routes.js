@@ -14,7 +14,7 @@ router.post('/songs', upload.single('audio') , async (req, res) => {
     // req.file will contain the file
     
     const fileData = await uploadFile(req.file);
-    console.log(fileData);
+    // console.log(fileData);
     const song = await songModel.create({
         title: req.body.title,
         artist: req.body.artist,
@@ -29,4 +29,15 @@ router.post('/songs', upload.single('audio') , async (req, res) => {
     
 })
 
+router.get('/songs', async (req, res) => {
+    const {mood} = req.query;
+    const songs = await songModel.find({
+        mood: mood
+    })
+
+    res.status(200).json({
+        messsage: "Songs fetched successfully!",
+        song: songs
+    })
+})
 module.exports = router;
