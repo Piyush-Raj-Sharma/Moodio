@@ -1,0 +1,41 @@
+.app-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two columns on large screens */
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  background: #111;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Each panel takes full height of grid cell */
+.app-container > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ✅ Tablet view */
+@media (max-width: 1024px) {
+  .app-container {
+    grid-template-columns: 1fr; /* stack */
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+/* ✅ Mobile view */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .app-container h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}

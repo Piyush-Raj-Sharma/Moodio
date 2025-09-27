@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import FacialExpression from "./components/FacialExpression";
 import MoodySongs from "./components/MoodySongs";
+import "./App.css";
 
 const App = () => {
-    const [songs, setSongs] = useState([]);
+  const [songs, setSongs] = useState([]);
+
   return (
-    <>
-      <FacialExpression setSongs = {setSongs} />
-      <MoodySongs songs = {songs} />
-    </>
+    <div className="app-container">
+      <FacialExpression setSongs={setSongs} />
+      <MoodySongs songs={songs} />
+    </div>
   );
 };
 
